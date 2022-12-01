@@ -45,10 +45,18 @@ fn main() {
     //println!("Elves: {:?}\n", elves);
 
 
-    let cals = elves.into_iter().map(|elf| elf.into_iter().sum()).collect::<Vec<i32>>();
+    let mut cals = elves.into_iter().map(|elf| elf.into_iter().sum()).collect::<Vec<i32>>();
     let max_value = cals.iter().max();
     match max_value {
-        Some(max) => println!( "Max Value: {}", max),
+        Some(max) => println!( "part1: {}", max),
         None      => println!( "No max value"),
     }
+
+    cals.sort();
+    cals.reverse();
+
+    //println!("{}, {}, {}", &cals[0],&cals[1],&cals[2]);
+    println!("part2: {}", &cals[0]+&cals[1]+&cals[2]);
+
+
 }
