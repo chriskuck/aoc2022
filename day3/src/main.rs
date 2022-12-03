@@ -37,20 +37,20 @@ fn main() {
 
     let mut sum = 0;
     for l in lines {
-        println!("Line: {:?}", l);
+        //println!("Line: {:?}", l);
         let mut shared_char:char = '\0';
         let mut shared_char_count = 0;
         let (one, two) = l.split_at(l.len()/2);
-        println!("{} - {}", one, two);
+        //println!("{} - {}", one, two);
         for c in one.chars() {
-            println!("{}", c);
+            //println!("{}", c);
             if two.find(c) != None {
-                println!("found: {}",c);
+                //println!("found: {}",c);
                 shared_char = c;
                 shared_char_count += 1;
             }
         }
-        println!("{} : {}", shared_char, scores[&shared_char]);
+        //println!("{} : {}", shared_char, scores[&shared_char]);
         sum += scores[&shared_char];
     }
 
