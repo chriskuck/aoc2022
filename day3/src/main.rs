@@ -31,12 +31,12 @@ fn main() {
 
     //println!("Text:\n{text}");
 
-    let lines = text.lines();
+    let first_lines = text.lines();
 
     //println!("Lines:\n{:?}", lines);
 
     let mut sum = 0;
-    for l in lines {
+    for l in first_lines {
         //println!("Line: {:?}", l);
         let mut shared_char:char = '\0';
         let (one, two) = l.split_at(l.len()/2);
@@ -53,4 +53,33 @@ fn main() {
     }
 
     println!("part 1:{}", sum);
+
+    let mut groups: Vec<String> = Vec::new();
+
+    for (i, l) in text.lines().enumerate() {
+        let bucket = i / 3;
+        if bucket+1 > groups.len() {
+            groups.push(l.to_string());
+        } else {
+            groups[bucket] = format!("{}{}", groups[bucket], l);
+        }
+    }
+    let second_lines = text.lines().collect::<Vec<&str>>();
+    //println!("{:?}", groups);
+    sum = 0;
+    for (i,g) in groups.into_iter().enumerate() {
+        //println!("Line: {:?}", l);
+        let mut shared_char:char = '\0';
+        let (one, two, three) = (second_lines[i*3+0], second_lines[i*3+1], second_lines[i*3+2]);
+        //println!("{} - {}", one, two);
+        for gc in g.chars() {
+            if one.find(gc) == None { continue; }
+            if two.find(gc) == None { continue; }
+            if three.find(gc) == None { continue; }
+            shared_char = gc;
+        }
+        //println!("{} : {}", shared_char, scores[&shared_char]);
+        sum += scores[&shared_char];
+    }
+    println!("part 2: {}", sum);
 }
