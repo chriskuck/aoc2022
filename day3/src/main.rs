@@ -39,7 +39,6 @@ fn main() {
     for l in lines {
         //println!("Line: {:?}", l);
         let mut shared_char:char = '\0';
-        let mut shared_char_count = 0;
         let (one, two) = l.split_at(l.len()/2);
         //println!("{} - {}", one, two);
         for c in one.chars() {
@@ -47,7 +46,6 @@ fn main() {
             if two.find(c) != None {
                 //println!("found: {}",c);
                 shared_char = c;
-                shared_char_count += 1;
             }
         }
         //println!("{} : {}", shared_char, scores[&shared_char]);
