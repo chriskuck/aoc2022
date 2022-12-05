@@ -44,7 +44,7 @@ fn parse_input(file_path: &str) -> (Stacks, Vec<(usize, usize, usize)>) {
     let stack_height = sections[0].lines().count();
     let stack_count = (sections[0].lines().last().unwrap().len()+1)/4;
 
-    for i in 0..stack_count {
+    for _ in 0..stack_count {
         stacks.stacks.push(Vec::new());
     }
 
@@ -71,7 +71,7 @@ fn parse_stack(line: &str, size: usize) -> Vec<char> {
     let mut chars = line.chars();
     result.push(chars.nth(1).unwrap().clone());
 
-    for i in 1..size {
+    for _ in 1..size {
         result.push(chars.nth(3).unwrap().clone());
     }
     return result;
