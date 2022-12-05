@@ -115,7 +115,7 @@ impl Stackable for Stacks {
 
     fn move_stuff(&mut self, num: usize, from: usize, to: usize) {
         let idx = self.stacks[from].len() - num;
-        let mut moved_stuff:Vec<char> = self.stacks[from].split_off(idx).into_iter().rev().collect();
+        let mut moved_stuff:Vec<char> = self.stacks[from].split_off(idx);
         self.stacks[to].append(&mut moved_stuff);
     }
 }
