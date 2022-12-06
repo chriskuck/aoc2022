@@ -7,3 +7,4 @@ This year, we'll try to do it in RUST.
 
 * Day4: regex parsing (90%), basic logic
 * Day5: file parsing (90%), data manipulation (no real logic)
+* Day6: file parsing (90%), string manipulation similar to day4
