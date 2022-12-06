@@ -20,9 +20,14 @@ fn main() {
 
     let messages = parse_input(file_path);
 
-    for m in messages { 
+    for m in &messages { 
         if m.is_empty() { continue; }
-        println!("msg: {} - marker: {}", m, find_marker(&m));
+        println!("msg: {} - pkt marker: {}", m, find_packet_marker(&m));
+    }
+
+    for m in &messages { 
+        if m.is_empty() { continue; }
+        println!("msg: {} - msg marker: {}", m, find_message_marker(&m));
     }
 }
 
@@ -35,7 +40,15 @@ fn parse_input(file_path: &str) -> Vec<String> {
     return text.split("\n").map(|msg| String::from(msg)).collect::<Vec<String>>();
 }
 
-fn find_marker(msg: &String) -> usize {
+fn find_message_marker(msg: &String) -> usize {
+    for i in 0..msg.len()-13 {
+        if is_marker(&msg[i..i+14]) { return i+14; }
+    }
+    println!("{}", msg);
+    panic!("Couldn't find the marker");
+}
+
+fn find_packet_marker(msg: &String) -> usize {
     for i in 0..msg.len()-3 {
         if is_marker(&msg[i..i+4]) { return i+4; }
     }
