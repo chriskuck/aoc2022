@@ -19,13 +19,14 @@ fn main() {
     }
 
     let map = parse_input(file_path);
-    //println!("{:?}", map);
 
     let visible: Vec<(usize,usize)> = find_visible(&map);
-    //println!("{:?}", visible);
 
     let part_1 = map.width()*2 + (map.height()-2)*2 + visible.len();
-    println!("part 1:{}", part_1);
+    println!("part 1: {}", part_1);
+
+    let part_2:u32 = *map.scenic_scores().iter().max().unwrap();
+    println!("part 2: {}", part_2);
 
 }
 
@@ -88,40 +89,60 @@ impl Map {
 
     fn is_visible_right(&self, x: usize, y:usize) -> bool {
         let max_visibility: u32 = *self.get_row(y)[0..x].iter().max().unwrap();
-        if self.get_value(x,y) > max_visibility {
-            //println!("right:{},{}", x,y);
-            return true;
-        } else {
-            return false;
-        }
+        self.get_value(x,y) > max_visibility
     }
 
     fn is_visible_left(&self,x: usize, y:usize) -> bool {
         let max_visibility: u32 = *self.get_row(y)[x+1..self.width()].iter().max().unwrap();
-        if self.get_value(x,y) > max_visibility {
-            //println!("left:{},{}", x,y);
-            return true;
-        } else {
-            return false;
-        }
+        self.get_value(x,y) > max_visibility
     }
 
     fn is_visible_up(&self,x: usize, y:usize) -> bool {
         let max_visibility: u32 = *self.get_col(x)[y+1..self.height()].iter().max().unwrap();
-        if self.get_value(x,y) > max_visibility {
-            //println!("up:{},{}", x,y);
-            return true;
-        } else {
-            return false;
-        }
+        self.get_value(x,y) > max_visibility
     }
+
     fn is_visible_down(&self,x: usize, y:usize) -> bool {
         let max_visibility: u32 = *self.get_col(x)[0..y].iter().max().unwrap();
-        if self.get_value(x,y) > max_visibility {
-           // println!("down:{},{}", x,y);
-            return true;
-        } else {
-            return false;
+        self.get_value(x,y) > max_visibility
+    }
+
+    fn scenic_scores(&self) -> Vec<u32> {
+
+        let mut result = Vec::new();
+        for y in 0..self.height() {
+            for x in 0..self.width() {
+                result.push(self.scenic_score(x,y));
+            }
         }
+        result
+    }
+
+    fn scenic_score(&self,x: usize, y:usize) -> u32 {
+        let row = self.get_row(y);
+        let col = self.get_col(x);
+        let val = self.get_value(x,y);
+
+        let right = &row[x+1..row.len()].to_vec();
+        let mut left = Vec::new();
+        for le in row[0..x].iter().rev() {
+            left.push(le.clone());
+        }
+        let mut up = Vec::new();
+        for u in col[0..y].iter().rev() {
+            up.push(u.clone());
+        }
+        let down = &col[y+1..row.len()].to_vec();
+
+        self.count_tree(right, val)*self.count_tree(&left, val)*self.count_tree(&up, val)*self.count_tree(down, val)
+    }
+
+    fn count_tree(&self, list:&Vec<u32>, val:u32) -> u32 {
+        let mut result: u32 = 0;
+        for v in list {
+            if *v >= val { return result+1; }
+            else { result += 1; }
+        }
+        result
     }
 }
